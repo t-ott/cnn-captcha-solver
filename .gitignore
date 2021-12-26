@@ -1,4 +1,10 @@
-# testing and training data folders, annotation file
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Jupyter notebook
+.ipynb_checkpoints/
+
+# test and train data folders, train annotation file
 test/
 train/
 train_annotations.csv
@@ -6,11 +12,6 @@ train_annotations.csv
 # PyTorch state dicts
 *.pt
 
-.ipynb_checkpoints/
-__pycache__/
-
-
-#
+##################################
 # TEMPORARY: ignore all notebooks
-#
 *.ipynb

@@ -15,7 +15,7 @@ class CharsDataset(Dataset):
         self.root_dir = root_dir
         self.transform = transforms.Compose([
             transforms.Grayscale(), # 3-band to 1-band
-            transforms.Resize((12, 10)), # ~average aspect ratio for each character image?
+            transforms.Resize((15, 12)), # average size of each char image
             transforms.ToTensor(),
             transforms.Normalize((0.5,), (0.5,))
         ])
