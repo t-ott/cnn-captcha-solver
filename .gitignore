@@ -1,0 +1,16 @@
+# testing and training data folders, annotation file
+test/
+train/
+train_annotations.csv
+
+# PyTorch state dicts
+*.pt
+
+.ipynb_checkpoints/
+__pycache__/
+
+
+#
+# TEMPORARY: ignore all notebooks
+#
+*.ipynb
