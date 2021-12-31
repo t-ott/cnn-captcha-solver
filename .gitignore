@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
-# Jupyter notebook
+# Jupyter notebook checkpoints
 .ipynb_checkpoints/
 
 # test and train data folders, train annotation file

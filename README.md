@@ -1,3 +1,3 @@
 # CNN CAPTCHA Solver
 
-PyTorch convolutional neural network (CNN).
+**Package to crack simple CAPTCHA images with a convolutional neural network (CNN). Built with OpenCV and PyTorch.**
