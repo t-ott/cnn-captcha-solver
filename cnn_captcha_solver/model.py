@@ -1,6 +1,3 @@
-'''
-PyTorch CNN model class
-'''
 from torch.nn import Module, Sequential, Conv2d, BatchNorm2d, ReLU, MaxPool2d, Linear, LogSoftmax
 
 class Model(Module):

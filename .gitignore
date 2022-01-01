@@ -11,7 +11,3 @@ train_annotations.csv
 
 # PyTorch state dicts
 *.pt
-
-##################################
-# TEMPORARY: ignore all notebooks
-*.ipynb

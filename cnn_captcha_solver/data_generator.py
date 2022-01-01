@@ -57,7 +57,7 @@ class DataGenerator:
         self.Segmenter = Segmenter()
 
 
-    def extract_train_set(self, target_dir):
+    def extract_train_set(self, target_dir, train_annotation_file='train_annotations.csv'):
         '''
         Uses Segmenter class to extract individual characters from directory of
         set CAPTCHA images, these char images serve as training data for the
@@ -105,7 +105,7 @@ class DataGenerator:
 
         annotation_df = pd.DataFrame(annotation_rows)
         annotation_df.to_csv('train_annotations.csv', index=False)
-        print('Done! Saving filename/numeric class label key to file: train_annotations.csv')
+        print(f'Done! Saving filename/numeric class label key to file: {train_annotation_file}')
 
 
     def save_test_set(self, target_dir):

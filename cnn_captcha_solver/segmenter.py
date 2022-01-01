@@ -37,8 +37,9 @@ class Segmenter:
             rects.sort(key=lambda x: x[2])
 
         if len(rects) > 4:
-            raise RuntimeError('Uh oh! For some reason more than 4 characters '
-                               'were identified in the CAPTCHA!')
+            print('For some reason more than 4 characters were identified in '
+                  'the CAPTCHA! Returning the widest four...')
+            rects = rects[-4:]
 
         # sort rects by horizontal position left to right
         rects.sort(key=lambda x: x[0])
@@ -48,8 +49,19 @@ class Segmenter:
         # use bounding rects to crop each character from the image array
         segmented_chars = []
         for rect, label in zip(rects, labels):
-            # buffer char by one pixel for better image
-            char_img = img[rect[1]-1:rect[1]+rect[3]+1, rect[0]-1:rect[0]+rect[2]+1, :]
+            x, y, w, h = rect
+
+            # buffer char's bounding rect by one pixel if possible
+            if x > 0:
+                x -= 1
+            if y > 0:
+                y -= 1
+            if x+w < img.shape[1]:
+                w += 1
+            if y+h < img.shape[0]:
+                h += 1
+                
+            char_img = img[y:y+h, x:x+w, :]
             segmented_chars.append((char_img, label))
 
         if plot:
@@ -60,7 +72,7 @@ class Segmenter:
 
     def plot_segmented_chars(self, img, segmented_chars):
         '''Plot image and segmented characters side-by-side'''
-        
+
         fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(
             1, 5, figsize=(12,2), gridspec_kw={'width_ratios': [4, 1, 1, 1, 1]}
         )
