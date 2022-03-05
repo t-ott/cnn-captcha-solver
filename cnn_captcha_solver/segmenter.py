@@ -3,10 +3,32 @@ import cv2
 import matplotlib.pyplot as plt
 
 class Segmenter:
+    '''
+    Methods
+    -------
+    segment_chars(img_path, plot=False):
+        Utilizes OpenCV findContours() to extract bounding rectangles of
+        characters within a CAPTCHA image
+
+    plot_segmented_chars(img, segmented_chars):
+        Plot image and segmented characters side-by-side
+    '''
     def segment_chars(self, img_path: str, plot=False) -> list:
         '''
         Utilizes OpenCV findContours() to extract bounding rectangles of
         characters within a CAPTCHA image
+
+        Parameters
+        ----------
+        img_path : str
+            Path to CAPTCHA image to segment into characters
+        plot : bool, default: False
+            Option to plot the CAPTCHA segmentation results
+
+        Returns
+        -------
+        segmented_chars : list
+            List of (char_img, label) tuples
         '''
         img = cv2.imread(img_path)
         # covert to grayscale
@@ -60,18 +82,27 @@ class Segmenter:
                 w += 1
             if y+h < img.shape[0]:
                 h += 1
-                
+
             char_img = img[y:y+h, x:x+w, :]
             segmented_chars.append((char_img, label))
 
         if plot:
             self.plot_segmented_chars(img, segmented_chars)
 
-        return segmented_chars # list of (char_img, label) tuples
+        return segmented_chars
 
 
     def plot_segmented_chars(self, img, segmented_chars):
-        '''Plot image and segmented characters side-by-side'''
+        '''
+        Plot image and segmented characters side-by-side.
+
+        Parameters
+        ----------
+        img : np.array
+            CATPCHA image array
+        segmented_chars: list
+            List of (char_img, label) tuples
+        '''
 
         fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(
             1, 5, figsize=(12,2), gridspec_kw={'width_ratios': [4, 1, 1, 1, 1]}

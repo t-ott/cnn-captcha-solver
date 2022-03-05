@@ -11,7 +11,7 @@ class DataGenerator:
     Data generator that takes a directory of CAPTCHA images and spits them out
     into directories for training and testing sets
 
-    Attributes
+    Parameters
     ----------
     src_dir : str
         path to directory that contains CAPTCHA images, image files must be
@@ -21,14 +21,28 @@ class DataGenerator:
     train_size : float, default=0.75
         size of training set to be extracted, range from 0.0 - 1.0
 
+    Attributes
+    ----------
+    train_img_paths : list
+        List of paths to character training images
+    test_img_paths : list
+        List of paths to CAPTCHA test images
+    label_dict : dict
+        Dictionary containing (alphanumeric character: integer label) items for
+        each character in the training set
+    Segmenter : .segmenter.Segmenter
+        Instance of the .segmeneter.Segmenter class to segmenting test images
+
     Methods
     -------
-    extract_train_set():
-        desc
-    save_test_set():
-        desc
-    save_label_dict():
-        desc
+    extract_train_set(target_dir, train_annotation_file='train_annotations.csv'):
+        Uses Segmenter class to extract individual characters from directory of
+        CAPTCHA images
+    save_test_set(target_dir):
+        Copy over test set images to target directory
+    save_label_dict(target_path):
+        Save label dictionary of integer labels of alphanumeric characters
+        within CAPTCHA images to a CSV
     '''
     def __init__(self, src_dir, train_size=0.75, random_seed=None):
         if random_seed:
@@ -62,6 +76,15 @@ class DataGenerator:
         Uses Segmenter class to extract individual characters from directory of
         set CAPTCHA images, these char images serve as training data for the
         character classification model
+
+        Parameters
+        ----------
+        target_dir : str
+            Path for new directory, or empty directory, to contain character
+            training images extracted from the trianing CAPTCHA images
+        train_annotation_file : str, default=train_annotations.csv
+            Path to annotations CSV file of training data, with each row
+            containing (filename, label)
         '''
 
         if os.path.isdir(target_dir) == False:
@@ -108,7 +131,7 @@ class DataGenerator:
         print(f'Done! Saving filename/numeric class label key to file: {train_annotation_file}')
 
 
-    def save_test_set(self, target_dir):
+    def save_test_set(self, target_dir: str):
         '''
         Copy over test set images to target directory
         These will remain unsegmented/unaltered so the model can be evaluated on
@@ -133,6 +156,10 @@ class DataGenerator:
 
 
     def save_label_dict(self, target_path):
+        '''
+        Save label dictionary of integer labels of alphanumeric characters
+        within CAPTCHA images to a CSV
+        '''
         label_dict_items = self.label_dict.items()
         label_list = list(label_dict_items)
         label_df = pd.DataFrame(label_list, columns=['char', 'int'])

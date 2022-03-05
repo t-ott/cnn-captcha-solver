@@ -1,6 +1,16 @@
-from torch.nn import Module, Sequential, Conv2d, BatchNorm2d, ReLU, MaxPool2d, Linear, LogSoftmax
+from torch.nn import (
+    Module,
+    Sequential,
+    Conv2d,
+    BatchNorm2d,
+    ReLU,
+    MaxPool2d,
+    Linear,
+    LogSoftmax
+)
 
 class Model(Module):
+    '''Convolutional neural network architecture, loosely based on LeNet'''
     def __init__(self):
         super(Model, self).__init__()
 

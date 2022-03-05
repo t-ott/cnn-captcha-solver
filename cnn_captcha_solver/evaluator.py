@@ -16,19 +16,22 @@ class Evaluator:
     Attributes
     ----------
     Model : .model.Model
-        desc
-    trasnform : PyTorch transforms
-        desc
-    model_state_dict : str
+        PyTorch model, instance of the .model.Model class
+    transform : PyTorch transforms
+        PyTorch transforms chained together with torchvision.transforms.Compose()
+    Segmenter : .segmenter.Segmenter
+        Instance of the .segmenter.Segmenter class to segment characters from
+        CAPTCHAs
+    label_dict : dict
         Path to PyTorch state_dict file (typically .pt or .pth extension) to
         load the trained state of a model
 
     Methods
     -------
     predict():
-        desc
+        Use trained model to make a prediction on a CAPTCHA image
     evaluate_test_set():
-        desc
+        Evalute trained model on a test set of CAPTCHA images
     '''
     def __init__(self, Model, transform, label_key, model_state_dict=None):
         self.Model = Model
@@ -49,7 +52,7 @@ class Evaluator:
 
 
     def predict(self, img_path, print_results=False, plot_segmentation=False):
-        '''Predict on a single sample'''
+        '''Use trained model to make a prediction on a CAPTCHA image'''
         # Segment CAPTCHA image into characters
         segmented_chars = self.Segmenter.segment_chars(img_path, plot=plot_segmentation)
 
@@ -73,6 +76,7 @@ class Evaluator:
 
 
     def evaluate_test_set(self, src_dir):
+        '''Evalute trained model on a test set of CAPTCHA images'''
         test_img_paths = [os.path.join(src_dir, img_path)
                           for img_path in os.listdir(src_dir)
                           if img_path.lower().endswith(('.jpg', '.png'))]
@@ -92,6 +96,25 @@ class Evaluator:
 
 
 class EvaluatorResults:
+    '''
+    Results object returned by the Evaluator.evaluate_test_set() method
+
+    Attributes
+    ----------
+    char_predictions : list
+        List of tuples with (predicted character, actual character)
+    captcha_predictions : list
+        List of tuples with (predicted captcha text, actual captcha text)
+    label_dict : dict
+        Dictionary which contains integer character label keys, and alphanumeric
+        characters (str) as values
+
+    Methods
+    -------
+    plot_confusion_matrix():
+        Plot a confusion matrix showing prediction results for every character
+        in the test set
+    '''
     def __init__(self, char_predictions, captcha_predictions, label_dict):
         self.char_predictions = char_predictions
         self.captcha_predictions = captcha_predictions
@@ -113,6 +136,10 @@ class EvaluatorResults:
 
 
     def plot_confusion_matrix(self):
+        '''
+        Plot a confusion matrix showing prediction results for every character
+        in the test set
+        '''
         n_classes = len(self.label_dict)
 
         # pandas df with rows as predicted, cols as actual. initialize counts

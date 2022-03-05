@@ -9,6 +9,33 @@ class CharsDataset(Dataset):
     '''
     Custom PyTorch Dataset to load in individual character images segmented
     from CAPTCHA images
+
+    Parameters
+    ----------
+    annotations_path : str
+        Path to annotations CSV file of training data, with each row
+        containing (filename, label)
+    root_dir : str
+        Path to directory containing segmented character training images
+
+    Attributes
+    ----------
+    annotations : pandas.DataFrame
+        Pandas DataFrame with character image filenames (column 0, named
+        'filenames') and their corresponding integer labels (column 1, named
+        'label')
+    root_dir : str
+        Path to the directory which contains the character training images
+    transform :
+
+    Methods
+    -------
+    __len__():
+        Returns the length of the training dataset
+
+    __getitem__():
+        Returns the next (img, y_label) tuple, with the img as a transformed
+        tensor
     '''
     def __init__(self, annotations_path, root_dir):
         self.annotations = pd.read_csv(annotations_path)
